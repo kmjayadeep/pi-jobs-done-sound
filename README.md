@@ -1,52 +1,62 @@
-# pi-jobs-done-sound
+<p align="center">
+  <img src="https://img.shields.io/npm/v/%40kmjayadeep%2Fpi-jobs-done-sound?style=for-the-badge&color=7c3aed&labelColor=1e1b4b" alt="npm version">
+  <img src="https://img.shields.io/npm/dm/%40kmjayadeep/pi-jobs-done-sound?style=for-the-badge&color=7c3aed&labelColor=1e1b4b" alt="npm downloads">
+  <img src="https://img.shields.io/npm/l/%40kmjayadeep%2Fpi-jobs-done-sound?style=for-the-badge&color=7c3aed&labelColor=1e1b4b" alt="license">
+  <img src="https://img.shields.io/github/actions/workflow/status/kmjayadeep/pi-jobs-done-sound/publish.yml?style=for-the-badge&label=CI&color=7c3aed&labelColor=1e1b4b" alt="CI status">
+  <img src="https://img.shields.io/npm/types/%40kmjayadeep%2Fpi-jobs-done-sound?style=for-the-badge&color=7c3aed&labelColor=1e1b4b" alt="types">
+</p>
 
-A tiny [Pi](https://pi.dev/) extension that plays a short sound when Pi finishes an agent turn and is ready for your next instruction.
+<h1 align="center">🔔 pi-jobs-done-sound</h1>
 
-Useful when you kick off a longer task, switch windows, and want an audible cue when the job is done.
+<p align="center">
+  <strong>A tiny <a href="https://pi.dev/">Pi</a> extension that plays a sound notification when Pi finishes an agent turn.</strong>
+</p>
 
-## Install from GitHub (quick)
+<p align="center">
+  Kick off a long-running task, switch windows, and get an audible cue when the job is done — no more staring at the terminal waiting.
+</p>
+
+---
+
+## ✨ Features
+
+- 🎵 **Plays a completion sound** when Pi emits the `agent_end` event
+- 🖥️ **Cross-platform** — Linux (`mpv`, `ffplay`, `mpg123`, `paplay`, `pw-play`), macOS (`afplay`)
+- 🛎️ **Graceful fallback** to the terminal bell if no audio player is found
+- 📦 **Self-contained** — ships its own `jobs_done.mp3`
+- 🪶 **Zero configuration** — install and forget
+
+## 📦 Install
 
 ```bash
-pi install git:github.com/kmjayadeep/pi-jobs-done-sound
-```
-
-Then restart Pi, or run `/reload` in an existing Pi session.
-
-## Install from npm
-
-```bash
+# From npm (recommended)
 pi install npm:@kmjayadeep/pi-jobs-done-sound
-```
 
-## Install
-
-```bash
+# From GitHub
 pi install git:github.com/kmjayadeep/pi-jobs-done-sound
 ```
 
 Then restart Pi, or run `/reload` in an existing Pi session.
 
-## Try without installing
+## 🧪 Try without installing
 
 ```bash
-pi -e git:github.com/kmjayadeep/pi-jobs-done-sound
-
-# Or from npm
 pi -e npm:@kmjayadeep/pi-jobs-done-sound
+
+# Or from GitHub
+pi -e git:github.com/kmjayadeep/pi-jobs-done-sound
 ```
 
-## Requirements
+## 🔧 Requirements
 
-The extension includes `extension/jobs_done.mp3` and tries these players:
+| OS      | Players tried (in order)                    |
+| ------- | ------------------------------------------- |
+| Linux   | `mpv`, `ffplay`, `mpg123`, `paplay`, `pw-play` |
+| macOS   | `afplay`                                    |
 
-- Linux: `mpv`, `ffplay`, `mpg123`, `paplay`, `pw-play`
-- macOS: `afplay`
+If none are available, it falls back to the **terminal bell** (`\x07`).
 
-If no player works, it falls back to the terminal bell.
-
-## How it works
-
-The extension listens for Pi's `agent_end` event and plays the bundled MP3:
+## 🧠 How it works
 
 ```ts
 pi.on("agent_end", async () => {
@@ -54,31 +64,22 @@ pi.on("agent_end", async () => {
 });
 ```
 
-## Package structure
+That's it. The extension hooks into Pi's event system and plays the bundled MP3 whenever Pi finishes processing your request.
+
+## 📁 Package structure
 
 ```text
 .
 ├── extension/
-│   ├── index.ts
-│   └── jobs_done.mp3
+│   ├── index.ts          # Extension entry point
+│   └── jobs_done.mp3     # Sound file
 ├── package.json
 ├── tsconfig.json
 ├── LICENSE
 └── README.md
 ```
 
-`package.json` declares this as a Pi package with:
-
-```json
-{
-  "keywords": ["pi-package", "pi-extension"],
-  "pi": {
-    "extensions": ["./extension"]
-  }
-}
-```
-
-## Development
+## 🛠️ Development
 
 ```bash
 npm install
@@ -86,41 +87,29 @@ npm run typecheck
 pi -e ./extension
 ```
 
-## Publishing
+## 📤 Publishing
 
-New versions are published to npm via a GitHub Actions workflow that uses OIDC for authentication and [npm provenance](https://docs.npmjs.com/generating-provenance-statements) — no stored secrets needed.
+New versions are published to npm via a GitHub Actions workflow using OIDC (no stored secrets!) with [npm provenance](https://docs.npmjs.com/generating-provenance-statements).
 
-### Prerequisites
+### One-time setup
 
-Before the first publish, set up an npm publisher on npmjs.com:
-
-1. Go to **[npm publishers page](https://www.npmjs.com/settings/kmjayadeep/publishers)** for your account.
-2. Click **"Add Publisher"**.
-3. Enter your GitHub repository URL:
-   `https://github.com/kmjayadeep/pi-jobs-done-sound`.
+1. Go to the **[npm publishers page](https://www.npmjs.com/settings/kmjayadeep/publishers)** for your account.
+2. Click **Add Publisher**.
+3. Enter your repo URL: `https://github.com/kmjayadeep/pi-jobs-done-sound`.
 4. Confirm the OIDC connection.
 
-This tells npm to trust OIDC tokens from GitHub Actions for this repo.
+This tells npm to trust OIDC tokens from GitHub Actions for this repository.
 
 ### Trigger a publish
 
-Create and push a GitHub Release (with a tag like `v0.1.0`). The workflow at `.github/workflows/publish.yml` runs automatically:
+Create and push a GitHub Release with a version tag (e.g. `v0.1.3`):
 
 ```bash
-# Tag and push
-cd pi-jobs-done-sound
-npm version patch    # bumps to 0.1.1, creates a git tag
-git push --tags origin main
+npm version patch && git push --tags origin main
 ```
 
-Then create a GitHub Release from the tag on the [Releases page](https://github.com/kmjayadeep/pi-jobs-done-sound/releases) — this triggers the publish workflow.
+Then create a GitHub Release from the tag on the [Releases page](https://github.com/kmjayadeep/pi-jobs-done-sound/releases) — the workflow fires automatically.
 
-### Workflow details
+## 📄 License
 
-- Uses `npm publish --provenance` with `id-token: write` for OIDC.
-- Runs on `release` events (tag published) and can be triggered manually via the GitHub UI.
-- Runs type checking before publishing.
-
-## License
-
-MIT
+[MIT](LICENSE) © [Jayadeep KM](https://github.com/kmjayadeep)
