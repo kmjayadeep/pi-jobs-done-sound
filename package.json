@@ -1,0 +1,51 @@
+{
+  "name": "@kmjayadeep/pi-jobs-done-sound",
+  "version": "0.1.0",
+  "description": "Play a small sound when Pi finishes an agent turn.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./extension/index.ts",
+      "default": "./extension/index.ts"
+    }
+  },
+  "types": "./extension/index.ts",
+  "files": [
+    "extension",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "pi-coding-agent",
+    "notification",
+    "sound"
+  ],
+  "author": "Jayadeep KM",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmjayadeep/pi-jobs-done-sound.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kmjayadeep/pi-jobs-done-sound/issues"
+  },
+  "homepage": "https://github.com/kmjayadeep/pi-jobs-done-sound#readme",
+  "pi": {
+    "extensions": [
+      "./extension"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "^0.80.3",
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}
