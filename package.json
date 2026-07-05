@@ -1,6 +1,6 @@
 {
   "name": "@kmjayadeep/pi-jobs-done-sound",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Play a small sound when Pi finishes an agent turn.",
   "type": "module",
   "exports": {
